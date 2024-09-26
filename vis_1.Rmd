@@ -1,0 +1,10 @@
+---
+title: "Vis 1"
+author: "Wenjie Wu"
+output: github_document
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+```
+
