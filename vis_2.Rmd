@@ -1,0 +1,99 @@
+---
+title: "Vis 2"
+author: "Wenjie Wu"
+output: github_document
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(ggridges)
+```
+
+```{r}
+weather_df = 
+  rnoaa::meteo_pull_monitors(
+    c("USW00094728", "USW00022534", "USS0023B17S"),
+    var = c("PRCP", "TMIN", "TMAX"), 
+    date_min = "2021-01-01",
+    date_max = "2022-12-31") |>
+  mutate(
+    name = case_match(
+      id, 
+      "USW00094728" ~ "CentralPark_NY", 
+      "USW00022534" ~ "Molokai_HI",
+      "USS0023B17S" ~ "Waterhole_WA"),
+    tmin = tmin / 10,
+    tmax = tmax / 10) |>
+  select(name, id, everything())
+```
+
+Make a scatterplot but fancy
+
+```{r}
+weather_df |>
+  ggplot(aes(x = tmin, y = tmax, color = name)) + 
+  geom_point(alpha = .3) + 
+  labs(
+    title = "Temperature scatterplot",
+    x = "Minimum Temp (C)",
+    y = "Maximum Temp (C)",
+    color = "Location", 
+    caption = "Weather data taken from rnoaa package for three stations"
+  )
+```
+
+Scales -- start with `x` and `y` and then do `color`
+
+```{r}
+weather_df |>
+  ggplot(aes(x = tmin, y = tmax, color = name)) + 
+  geom_point(alpha = .3) + 
+  labs(
+    title = "Temperature scatterplot",
+    x = "Minimum Temp (C)",
+    y = "Maximum Temp (C)",
+    color = "Location", 
+    caption = "Weather data taken from rnoaa package for three stations"
+  ) + 
+  scale_x_continuous(
+    breaks = c(-15, 0, 20),
+    labels = c("-15C", "0", "20")
+  ) + 
+  scale_y_continuous(
+    limits = c(0,30),
+    transform = "sqrt"
+  )
+```
+
+Look for color
+
+```{r}
+weather_df |>
+  ggplot(aes(x = tmin, y = tmax, color = name)) + 
+  geom_point(alpha = .3) + 
+  labs(
+    title = "Temperature scatterplot",
+    x = "Minimum Temp (C)",
+    y = "Maximum Temp (C)",
+    color = "Location", 
+    caption = "Weather data taken from rnoaa package for three stations"
+  )
+```
+
+Scales -- start with `x` and `y` and then do `color`
+
+```{r}
+weather_df |>
+  ggplot(aes(x = tmin, y = tmax, color = name)) + 
+  geom_point(alpha = .3) + 
+  labs(
+    title = "Temperature scatterplot",
+    x = "Minimum Temp (C)",
+    y = "Maximum Temp (C)",
+    color = "Location", 
+    caption = "Weather data taken from rnoaa package for three stations"
+  ) + 
+  viridis::scale_color_viridis(discrete = TRUE)
+```
+
+
