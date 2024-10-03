@@ -7,6 +7,7 @@ output: github_document
 ```{r setup, include = FALSE}
 library(tidyverse)
 library(ggridges)
+library(readxl)
 ```
 
 ```{r}
